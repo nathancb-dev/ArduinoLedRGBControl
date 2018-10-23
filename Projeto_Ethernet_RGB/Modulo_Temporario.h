@@ -1,0 +1,7 @@
+void initTemporario(){
+  
+}
+
+void MethodTemporario(){
+  
+}
