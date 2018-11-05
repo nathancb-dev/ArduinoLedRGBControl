@@ -17,19 +17,31 @@ void MethodBotoes() {
 
     if (!digitalRead(BT1)) {
 
-      screenPath[screenDepth]--;
-      if (screenPath[screenDepth] < 0 && screenLateralLimit > 0) screenPath[screenDepth] = screenLateralLimit - 1;
+      if (!changingValue) {
+        screenPath[screenDepth]--;
+        if (screenPath[screenDepth] < 0 && screenLateralLimit > 0) screenPath[screenDepth] = screenLateralLimit - 1;
+
+        showTela();
+      } else {
+        *vChangingValue--;
+        if(*vChangingValue < 0) *vChangingValue = 0;
+      }
 
 
-      showTela();
       tBtn = millis() + timeBtn;
     } else if (!digitalRead(BT2)) {
 
-      screenPath[screenDepth]++;
-      if (screenPath[screenDepth] >= screenLateralLimit && screenLateralLimit > 0) screenPath[screenDepth] = 0;
+      if (!changingValue) {
+        screenPath[screenDepth]++;
+        if (screenPath[screenDepth] >= screenLateralLimit && screenLateralLimit > 0) screenPath[screenDepth] = 0;
+
+        showTela();
+      } else {
+        *vChangingValue++;
+        if(*vChangingValue > 255) *vChangingValue = 255;
+      }
 
 
-      showTela();
       tBtn = millis() + timeBtn;
     }
 

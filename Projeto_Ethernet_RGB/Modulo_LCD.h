@@ -1,5 +1,6 @@
 // ================ Variaveis ================
 int contrasteLCD = 110; // valor mais adequado
+int brightnessLCD = 255;
 int tela = 2;
 int maxTela = 4;
 bool show = true;
@@ -14,6 +15,10 @@ int screenDepthLimit; // limite de profundidade
 int screenPath[6]; // caminhos por onde as screen são buscadas
 int screenLateralLimit;
 
+bool changingValue;
+int *vChangingValue;
+int valuePosition;
+
 // ============== End Variaveis ==============
 // ================= Millis ==================
 const int timePisca = 500;
@@ -27,17 +32,9 @@ void initLCD() {
   lcd.print("Inicializando...");
 }
 
-void SetRGBPisca(int value) {
-  if (subTelaOF || !digitalRead(BT2) || !digitalRead(BT1)) {
-    lcd.print(value);
-  } else {
-    lcd.print("   ");
-  }
-
-  if (tPiscaSet <= millis()) {
-    subTelaOF = !subTelaOF;
-    tPiscaSet = millis() + timePisca;
-  }
+void setChangingValue(int * p) {
+  changingValue = true;
+  vChangingValue = p;
 }
 
 void showArrow(int line, int start, int end) {
@@ -49,27 +46,41 @@ void showArrow(int line, int start, int end) {
 
 void MethodLCD() {
   if (show) {
-
+    changingValue = false;
     lcd.clear();
     switch (screenPath[0]) {
       case 0:
-        lcd.setCursor(4, 0);
-        lcd.print("Stand-By");
+        if (screenDepth <= 2) {
+          lcd.setCursor(4, 0);
+          lcd.print("Stand-By");
+        }
         if (screenDepth >= 1) {
-          lcd.setCursor(1, 1);
           switch (screenPath[1]) {
             case 0:
-              lcd.print("Spectrum Ana..");
+              if (screenDepth >= 2) {
+                lcd.setCursor(0, 0);
+                lcd.print("Ok");
+              } else {
+                lcd.setCursor(1, 1);
+                lcd.print("Spectrum Ana..");
+                showArrow(1, 0, 15);
+              }
               screenLateralLimit = 2;
-              screenDepthLimit = 1;
+              screenDepthLimit = 2;
               break;
             case 1:
-              lcd.print("Float.. Circle");
+              if (screenDepth >= 2) {
+                lcd.setCursor(0, 0);
+                lcd.print("Ok");
+              } else {
+                lcd.setCursor(1, 1);
+                lcd.print("Float.. Circle");
+                showArrow(1, 0, 15);
+              }
               screenLateralLimit = 2;
-              screenDepthLimit = 1;
+              screenDepthLimit = 2;
               break;
           }
-          showArrow(1, 0, 15);
         } else {
           showArrow(0, 0, 15);
           screenLateralLimit = 4;
@@ -79,7 +90,7 @@ void MethodLCD() {
       case 1:
         lcd.setCursor(3, 0);
         lcd.print("Server IP:");
-        lcd.setCursor(0, 1);
+        lcd.setCursor(1, 1);
         lcd.print("192.168.0.150");
         showArrow(0, 0, 15);
         screenLateralLimit = 4;
@@ -108,19 +119,31 @@ void MethodLCD() {
                     lcd.setCursor(4, 0);
                     lcd.print("Contrast");
                     lcd.setCursor(6, 1);
-                    lcd.print("Cxxx");
-                    showArrow(0, 0, 15);
+                    lcd.print("C");
+                    if (screenDepth >= 3) {
+                      setChangingValue(&contrasteLCD);
+                      valuePosition = 7;
+                    } else {
+                      showArrow(0, 0, 15);
+                      lcd.print("xxx");
+                    }
                     screenLateralLimit = 2;
-                    screenDepthLimit = 2;
+                    screenDepthLimit = 3;
                     break;
                   case 1:
                     lcd.setCursor(3, 0);
                     lcd.print("Brightness");
                     lcd.setCursor(6, 1);
-                    lcd.print("Bxxx");
-                    showArrow(0, 0, 15);
+                    lcd.print("B");
+                    if (screenDepth >= 3) {
+                      setChangingValue(&brightnessLCD);
+                      valuePosition = 7;
+                    } else {
+                      showArrow(0, 0, 15);
+                      lcd.print("xxx");
+                    }
                     screenLateralLimit = 2;
-                    screenDepthLimit = 2;
+                    screenDepthLimit = 3;
                     break;
                 }
               } else {
@@ -179,18 +202,19 @@ void MethodLCD() {
     show = false;
   }
 
-  //  if (tela == 2) {
-  //   if (tela == 2) {
-  //      lcd.setCursor(2, 1);
-  //      SetRGBPisca(r1);
-  //    } else if (tela == 3) {
-  //      lcd.setCursor(7, 1);
-  //      SetRGBPisca(g1);
-  //    } else if (tela == 4) {
-  //      lcd.setCursor(12, 1);
-  //      SetRGBPisca(b1);
-  //    }
-  //  }
+  if (changingValue) {
+    lcd.cursor(valuePosition, 1);
+    if (subTelaOF || !digitalRead(BT2) || !digitalRead(BT1)) {
+      lcd.print(*vChangingValue);
+    } else {
+      lcd.print("   ");
+    }
+
+    if (tPiscaSet <= millis()) {
+      subTelaOF = !subTelaOF;
+      tPiscaSet = millis() + timePisca;
+    }
+  }
 }
 
 void showTela() {

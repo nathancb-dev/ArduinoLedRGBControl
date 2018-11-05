@@ -26,14 +26,6 @@ LiquidCrystal lcd(39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49); //inicial o objet
 #define BLUE2 7
 
 
-
-
-
-
-
-
-
-
 void initTop() {
   pinMode(2, OUTPUT); // contraste LCD
 

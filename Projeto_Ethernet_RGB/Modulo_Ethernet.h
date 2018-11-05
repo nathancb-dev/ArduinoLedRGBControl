@@ -32,7 +32,7 @@ void MethodEthernet() {
           client.println("<body>");
           client.println("<h1>Ol&aacute; sendo enviado pelo Arduino!</h1>");
           client.println("<p>Esta &eacute; a minha primeira p&aacute;gina web no Ethernet Shield</p>");
-          client.println("<p>##### Brincando com Ideias na Internet #####</p>");
+          client.println("<p>##### Kappa #####</p>");
           client.println("</body>");
           client.println("</html>");
           break;

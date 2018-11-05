@@ -13,14 +13,14 @@ void setup() {
   initLCD();
   initRGB();
   initEthernet();
-  initBotoes();
   initTemporario();
+  initBotoes();
 }
 
 void loop() {
   MethodLCD();
   MethodRGB();
   MethodEthernet();
-  MethodBotoes();
   MethodTemporario();
+  MethodBotoes();
 }
