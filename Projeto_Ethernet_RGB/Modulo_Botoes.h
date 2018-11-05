@@ -1,8 +1,9 @@
 // ================ Variaveis ================
 bool pressedEnter;
+bool controlPressedEnter;
 // ============== End Variaveis ==============
 // ================= Millis ==================
-const int timeBtn = 250;
+const int timeBtn = 300;
 unsigned long tBtn;
 unsigned long tPressedEnter;
 // =============== End Millis ================
@@ -16,65 +17,44 @@ void MethodBotoes() {
 
     if (!digitalRead(BT1)) {
 
-      if (innerTela == 0) {
-        tela--;
-        if (tela < 0) tela = 0;
-      }
+      screenPath[screenDepth]--;
+      if (screenPath[screenDepth] < 0 && screenLateralLimit > 0) screenPath[screenDepth] = screenLateralLimit - 1;
 
-      if (tela == 2) {
-        if (innerTela == 1) {
-          r1--;
-          if (r1 < 0) r1 = 0;
-        } else if (tela == 3) {
-          g1--;
-          if (g1 < 0) g1 = 0;
-        } else if (tela == 4) {
-          b1--;
-          if (b1 < 0) b1 = 0;
-        }
-      }
 
+      showTela();
+      tBtn = millis() + timeBtn;
     } else if (!digitalRead(BT2)) {
 
-      if (innerTela == 0) {
-        tela++;
-        if (tela > maxTela) tela = maxTela;
-      }
+      screenPath[screenDepth]++;
+      if (screenPath[screenDepth] >= screenLateralLimit && screenLateralLimit > 0) screenPath[screenDepth] = 0;
 
 
-      if (tela == 2) {
-        r1++;
-        if (r1 > 255) r1 = 255;
-      } else if (tela == 3) {
-        g1++;
-        if (g1 > 255) g1 = 255;
-      } else if (tela == 4) {
-        b1++;
-        if (b1 > 255) b1 = 255;
-      }
-
+      showTela();
+      tBtn = millis() + timeBtn;
     }
 
-    showTela(tela);
-    tBtn = millis() + timeBtn;
   }
 
   if (!digitalRead(BT3)) {
 
-    if (millis() >= tPressedEnter + 1000) {
-      innerTela -= 1;
-      if (innerTela < 0) innerTela = 0;
-      showTela(tela);
+    if (millis() >= tPressedEnter + 1000) { // pressed
+      screenDepth -= 1;
+      if (screenDepth < 0) screenDepth = 0;
+      showTela();
       pressedEnter = false;
+      controlPressedEnter = false;
+      tPressedEnter = millis();
     } else {
       pressedEnter = true;
     }
 
   } else {
-    if (millis() >= tPressedEnter + 50 && pressedEnter) {
-      innerTela += 1;
-      if (innerTela > limitInnerTela) innerTela = limitInnerTela;
-      showTela(tela);
+    if (millis() >= tPressedEnter + 50 && pressedEnter && controlPressedEnter) { // click
+      screenDepth += 1;
+      if (screenDepth > screenDepthLimit) screenDepth = screenDepthLimit;
+      showTela();
+    } else {
+      controlPressedEnter = true;
     }
     pressedEnter = false;
     tPressedEnter = millis();

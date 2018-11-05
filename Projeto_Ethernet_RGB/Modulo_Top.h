@@ -15,6 +15,15 @@ LiquidCrystal lcd(39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49); //inicial o objet
 #define BT2 23
 #define BT3 25
 
+// Fita Led variaveis
+#define RED1 5
+#define RED2 9
+
+#define GREEN1 4
+#define GREEN2 8
+
+#define BLUE1 3
+#define BLUE2 7
 
 
 

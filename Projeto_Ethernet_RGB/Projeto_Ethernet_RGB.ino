@@ -10,16 +10,17 @@
 void setup() {
   initTop();
 
-  initEthernet();
-  initRGB();
   initLCD();
+  initRGB();
+  initEthernet();
   initBotoes();
+  initTemporario();
 }
 
 void loop() {
-  MethodEthernet();
-  MethodRGB();
   MethodLCD();
+  MethodRGB();
+  MethodEthernet();
   MethodBotoes();
   MethodTemporario();
 }
