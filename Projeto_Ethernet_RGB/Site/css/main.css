@@ -1,0 +1,101 @@
+header, main, footer {
+    padding-left: 300px;
+}
+
+@media only screen and (max-width : 992px) {
+    header, main, footer {
+        padding-left: 0;
+    }
+}
+
+@media only screen and (min-width: 400px) {
+ .top-nav.container {
+    width: 100%;
+}
+
+.principalcolor{
+    color: rgb(0, 141, 197);
+}
+
+nav {
+    height: 70px;
+    box-shadow: none;
+    border-bottom: 1px solid rgba(0,0,0,0.14);
+    background-color: transparent;
+}
+
+a.sidenav-trigger.top-nav {
+    position: absolute;
+    text-align: center;
+    height: 60px;
+    width: 60px;
+    top: -5px;
+    left: -25px;
+    z-index: 2;
+}
+
+ul.sidenav.sidenav-fixed li a {
+    font-size: 13px;
+    line-height: 44px;
+    height: 44px;
+    padding: 0 30px;
+}
+
+ul.collapsible-accordion .collapsible-body li a {
+    font-weight: 400;
+    padding: 0 37.5px 0 45px;
+}
+
+.outer {
+    opacity:0.8;
+    background-color: rgb(20, 20, 20);
+    display: table;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    z-index:10000;
+}
+  
+.middle {
+    display: table-cell;
+    vertical-align: middle;
+}
+  
+.inner {
+    margin-left: auto;
+    margin-right: auto;
+    width: 500px;
+}
+
+#mainRow{
+    padding-top: 10vh;
+}
+
+.material-icons.prefix.posfix{
+    right: 0rem !important
+}
+
+.input-field .prefix ~ input, .input-field .prefix ~ textarea, .input-field .prefix ~ label, .input-field .prefix ~ .validate ~ label, .input-field .prefix ~ .helper-text, .input-field .prefix ~ .autocomplete-content {
+    margin-left: 3rem;
+    margin-right: 1rem;
+    width: calc(100% - 4.28rem);
+}
+
+.labelinput{
+    position: relative;
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+}
+
+
+
+/**
+ * Demo Styles
+ */
+
+html {
+    height: 100%;
+    box-sizing: border-box;
+}
