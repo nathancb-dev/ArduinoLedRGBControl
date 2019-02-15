@@ -3,6 +3,7 @@
 
 <head>
 	<title>Room Control</title>
+	<meta name="viewport" content="width=device-width, initial-scale=0.5">
 	<link rel="stylesheet" type="text/css" href="css/materialize.min.css">
 	<link rel="stylesheet" type="text/css" href="css/main.css">
 </head>
@@ -48,14 +49,16 @@
 						<a class="collapsible-header waves-effect" tabindex="0">Configurações</a>
 						<div class="collapsible-body">
 							<ul>
-								<li><a href="#!" onclick="loadPage('configArduino', 'Arduino/Componentes')">Arduino / Server</a></li>
+								<li><a href="#!" onclick="loadPage('configArduino', 'Arduino/Componentes')">Arduino /
+										Server</a></li>
 								<li><a href="#!" onclick="loadPage('configSite', 'Configurações')">Site</a></li>
 							</ul>
 						</div>
 					</li>
 				</ul>
 			</li>
-			<li><a id="b_lateral" onclick="saveConfig()" class="waves-effect btn principalBackgroundColor"> Aplicar Configurações </a>
+			<li><a id="b_lateral" onclick="saveConfig()" class="waves-effect btn principalBackgroundColor"
+					style="display: none;"> Aplicar Configurações </a>
 			</li>
 		</ul>
 	</header>
@@ -67,7 +70,8 @@
 		</div>
 
 		<div class="fixed-action-btn">
-			<a id="b_flutuante" onclick="saveConfig()" class="btn-floating btn-large waves-effect tooltipped green" data-position="left" data-tooltip="Aplicar Configurações">
+			<a id="b_flutuante" onclick="saveConfig()" class="btn-floating btn-large waves-effect tooltipped green"
+				data-position="left" data-tooltip="Aplicar Configurações">
 				<i class="large material-icons">check</i>
 			</a>
 		</div>

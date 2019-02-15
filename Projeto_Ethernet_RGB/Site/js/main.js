@@ -17,6 +17,8 @@ $(document).ready(function () {
     if (i.substring(0, 2) == "c_") {
       if (val == "clear")
         $("#" + i.substring(2)).hide();
+      else
+        $("#" + i.substring(2)).show();
     }
   });
 
@@ -82,7 +84,7 @@ function showValues() {
     if (values[val.id]) {
       switch (val.id.substring(0, 1)) {
         case "w":
-          //$("#" + val.id).is(":checked");
+          if (val.value) $("#" + val.id).attr("checked", true);
           break;
         default:
           val.value = values[val.id];
@@ -94,28 +96,42 @@ function showValues() {
 
 function saveConfig() {
   registerValues();
-  let htmlString = "Salvo!<br/>" + addBrToJson(values);
+  let htmlString = "Salvo!<br/>" + addBrToJson({
+    teste: "nathan",
+    kappa: {
+      testes: "1",
+      Teste2: "232"
+    },
+    desenho: "tom e jerry"
+  });
   M.toast({ html: htmlString, classes: "rounded" });
 
   function addBrToJson(json) {
     let v = JSON.stringify(json, undefined, 4);
+    let c = "";
+    var s = "";
     let ident = 0;
-    for (let i = 0; i < v.length; i++) {
-      if (v.substring(i, i + 1) == "{") {
-        ident += 1;
-        v = v.substring(0, i + 1) + "<br/>" + getIdent() + v.substring(i + 1);
-        i += 5;
-      } else if (v.substring(i, i + 1) == ",") {
-        v = v.substring(0, i + 1) + "<br/>" + getIdent() + v.substring(i + 1);
-        i += 5;
-      } else if (v.substring(i, i + 1) == "}") {
-        ident -= 1;
-        v = v.substring(0, i) + "<br/>" + getIdent() + v.substring(i);
-        i += 5;
+    for (let i = 0; i <= v.length; i++) {
+      c = v.substring(i, i + 1);
+      switch (c) {
+        case "{":
+          ident += 1;
+          s += c + "<br/>" + getIdent();
+          break;
+        case "}":
+          ident -= 1;
+          s += "<br/>" + getIdent() + c;
+          break;
+        case ",":
+          s += c + "<br/>" + getIdent();
+          break;
+        default:
+          s += c;
+          break;
       }
     }
 
-    return v;
+    return s;
 
     function getIdent() {
       let r = "";
