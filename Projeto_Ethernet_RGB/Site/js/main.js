@@ -13,6 +13,13 @@ $(document).ready(function () {
     setTimeout(function () { clearInterval(va); }, 500);
   });
 
+  $.each($.cookie(), function (i, val) {
+    if (i.substring(0, 2) == "c_") {
+      if (val == "clear")
+        $("#" + i.substring(2)).hide();
+    }
+  });
+
   function ajustLastItem() {
     $last = $("#slide-out li").last();
     let margin = $(window).height() - $last.position().top - $last.children().outerHeight(true) + (($last.children().outerHeight(true) - $last.children().outerHeight()) / 2);
@@ -40,12 +47,15 @@ function loadPage(page, titleNav, callback) {
     });
 
     showValues();
-
-    $(".sidenav").sidenav();
-    $(".collapsible").collapsible();
-    $('select').formSelect();
+    M.AutoInit();
     $("#loadPage").hide(); // or remove
     setTimeout(callback, 100);
+
+    $.each($.cookie(), function (i, val) {
+      if (i.substring(0, 2) == "c_") {
+        $("#" + i).children().html(val);
+      }
+    });
 
     function modifyValue(that, num) {
       $input = $(that).parent().find("input");
@@ -57,8 +67,8 @@ function loadPage(page, titleNav, callback) {
 function registerValues() {
   $.each($(".isvalue"), function (i, val) {
     switch (val.id.substring(0, 1)) {
-      case "s":
-        values[val.id] = $("#" + val.id).val();
+      case "w":
+        values[val.id] = $("#" + val.id).is(":checked");
         break;
       default:
         values[val.id] = val.value;
@@ -71,8 +81,8 @@ function showValues() {
   $.each($(".isvalue"), function (i, val) {
     if (values[val.id]) {
       switch (val.id.substring(0, 1)) {
-        case "s":
-          $("#" + val.id).val(values[val.id]);
+        case "w":
+          //$("#" + val.id).is(":checked");
           break;
         default:
           val.value = values[val.id];
@@ -115,4 +125,17 @@ function saveConfig() {
       return r
     }
   }
+}
+
+function changeSaveBtn(id) {
+  $i = $("#" + id).children();
+  if ($i.html() == "check") {
+    $i.html("clear");
+    $("#" + id.substring(2)).hide();
+  } else {
+    $i.html("check");
+    $("#" + id.substring(2)).show();
+  }
+
+  $.cookie(id, $i.html());
 }

@@ -8,7 +8,6 @@
 </head>
 
 <body>
-
 	<div id="loadPage" class="outer">
 		<div class="middle">
 			<div class="inner">
@@ -23,7 +22,8 @@
 		<nav class="top-nav">
 			<div class="container">
 				<div class="nav-wrapper principalcolor">
-					<a href="#" data-target="slide-out" class="top-nav sidenav-trigger principalcolor"><i class="material-icons" style="font-size: 35px">menu</i></a>
+					<a href="#" data-target="slide-out" class="top-nav sidenav-trigger principalcolor"><i
+							class="material-icons" style="font-size: 35px">menu</i></a>
 					<h3 class="center" id="titleNav"> Room Control </h3>
 				</div>
 			</div>
@@ -32,27 +32,31 @@
 		<ul id="slide-out" class="sidenav sidenav-fixed">
 			<li>
 				<div class="center">
-					<div> <a href="#!" onclick="loadPage('home', 'Room Control')"> <i class="material-icons principalcolor" style="font-size: 150px; margin-top: 40px">settings_applications</i> </a>
+					<div> <a href="#!" onclick="loadPage('home', 'Room Control')"> <i
+								class="material-icons principalcolor"
+								style="font-size: 150px; margin-top: 40px">settings_applications</i> </a>
 					</div>
 					<div> Room Control V0.1</div>
 					<div> IP: XXX.XXX.XXX.X </div>
 				</div>
 			</li>
 			<li class="divider"></li>
+			<li><a href="#!">Fitas de Led (Nathan)</a></li>
 			<li class="noPadding">
 				<ul class="collapsible collapsible-accordion">
 					<li>
 						<a class="collapsible-header waves-effect" tabindex="0">Configurações</a>
 						<div class="collapsible-body">
 							<ul>
-									<li><a href="#!" onclick="loadPage('configArduino', 'Arduino/Componentes')">Arduino / Server</a></li>
+								<li><a href="#!" onclick="loadPage('configArduino', 'Arduino/Componentes')">Arduino / Server</a></li>
+								<li><a href="#!" onclick="loadPage('configSite', 'Configurações')">Site</a></li>
 							</ul>
 						</div>
 					</li>
 				</ul>
 			</li>
-			<li><a href="#!">Fitas de Led (Nathan)</a></li>
-			<li><a href="#!" onclick="saveConfig()" class="waves-effect btn principalBackgroundColor">Aplicar Configurações</a></li>
+			<li><a id="b_lateral" onclick="saveConfig()" class="waves-effect btn principalBackgroundColor"> Aplicar Configurações </a>
+			</li>
 		</ul>
 	</header>
 
@@ -61,10 +65,17 @@
 			<div id="mainRow" class="row">
 			</div>
 		</div>
+
+		<div class="fixed-action-btn">
+			<a id="b_flutuante" onclick="saveConfig()" class="btn-floating btn-large waves-effect tooltipped green" data-position="left" data-tooltip="Aplicar Configurações">
+				<i class="large material-icons">check</i>
+			</a>
+		</div>
 	</main>
 </body>
 
 <script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
+<script type="text/javascript" src="js/jquery.cookie.js"></script>
 <script type="text/javascript" src="js/materialize.min.js"></script>
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 <script type="text/javascript" src="js/main.js"></script>
