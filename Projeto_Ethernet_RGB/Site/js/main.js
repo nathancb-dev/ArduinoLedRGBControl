@@ -2,7 +2,7 @@ var values = {};
 
 $(document).ready(function () {
   ajustLastItem();
-  loadPage("home", "Room Control", ajustLastItem);
+  loadPage("configFitaLedNathan", "Room Control");
 
   $(window).resize(function () {
     ajustLastItem();
@@ -40,6 +40,8 @@ function loadPage(page, titleNav, callback) {
   }
 
   function loadComplete() {
+    registerValuesIfNot();
+
     $(".add").click(function () {
       modifyValue(this, +1);
     });
@@ -79,12 +81,32 @@ function registerValues() {
   });
 }
 
+function registerValuesIfNot() {
+  $.each($(".isvalue"), function (i, val) {
+    if (!values[val.id]) {
+      switch (val.id.substring(0, 1)) {
+        case "w":
+          values[val.id] = $("#" + val.id).is(":checked");
+          break;
+        default:
+          values[val.id] = val.value;
+          break;
+      }
+    }
+  });
+}
+
 function showValues() {
   $.each($(".isvalue"), function (i, val) {
     if (values[val.id]) {
       switch (val.id.substring(0, 1)) {
         case "w":
           if (val.value) $("#" + val.id).attr("checked", true);
+          break;
+        case "s":
+          val.value = values[val.id];
+          if ($("#" + val.id).hasClass("withData"))
+            registerSelectLoad(val.id);
           break;
         default:
           val.value = values[val.id];
@@ -96,14 +118,7 @@ function showValues() {
 
 function saveConfig() {
   registerValues();
-  let htmlString = "Salvo!<br/>" + addBrToJson({
-    teste: "nathan",
-    kappa: {
-      testes: "1",
-      Teste2: "232"
-    },
-    desenho: "tom e jerry"
-  });
+  let htmlString = "Salvo!<br/>" + addBrToJson(values);
   M.toast({ html: htmlString, classes: "rounded" });
 
   function addBrToJson(json) {
@@ -154,4 +169,19 @@ function changeSaveBtn(id) {
   }
 
   $.cookie(id, $i.html());
+}
+
+function registerSelectLoad(id) {
+  loadPageSelect(id);
+  $("#" + id).on("change", function () {
+    loadPageSelect(id);
+  });
+}
+
+function loadPageSelect(id) {
+  $selected = $("#" + id).find(":selected");
+  let onpage = $("#" + id).data().onpage;
+  let page = $selected.data().page;
+  let callback = $selected.data().callback;
+  if (page) $("#" + onpage).load("html/efeitosFitaL/" + page + ".html", window[callback]);
 }

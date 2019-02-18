@@ -8,8 +8,14 @@ header, main, footer {
     }
 }
 
-@media only screen and (min-width: 400px) {
- .top-nav.container {
+@media only screen and (max-width : 600px) {
+    h3#titleNav {
+        font-size: 1.5rem;
+        padding-top: 0.8rem;
+    }
+}
+
+.top-nav.container {
     width: 100%;
 }
 
