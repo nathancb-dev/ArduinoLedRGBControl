@@ -75,7 +75,7 @@ function registerValues() {
         values[val.id] = $("#" + val.id).is(":checked");
         break;
       default:
-        values[val.id] = val.value;
+        values[val.id] = $(val).val();
         break;
     }
   });
@@ -96,8 +96,10 @@ function registerValuesIfNot() {
   });
 }
 
-function showValues() {
-  $.each($(".isvalue"), function (i, val) {
+function showValues(specific) {
+  if (!specific) specific = "";
+  else specific += " "
+  $.each($(specific + ".isvalue"), function (i, val) {
     if (values[val.id]) {
       switch (val.id.substring(0, 1)) {
         case "w":
@@ -105,8 +107,10 @@ function showValues() {
           break;
         case "s":
           val.value = values[val.id];
-          if ($("#" + val.id).hasClass("withData"))
+          if ($("#" + val.id).hasClass("withData")) {
+            values[val.id] = $(val).val(); // Não sei pq, mas assim funciona (kappa)
             registerSelectLoad(val.id);
+          }
           break;
         default:
           val.value = values[val.id];
@@ -126,23 +130,29 @@ function saveConfig() {
     let c = "";
     var s = "";
     let ident = 0;
+    let marksClosed = true;
     for (let i = 0; i <= v.length; i++) {
       c = v.substring(i, i + 1);
-      switch (c) {
-        case "{":
-          ident += 1;
-          s += c + "<br/>" + getIdent();
-          break;
-        case "}":
-          ident -= 1;
-          s += "<br/>" + getIdent() + c;
-          break;
-        case ",":
-          s += c + "<br/>" + getIdent();
-          break;
-        default:
-          s += c;
-          break;
+      if (c == "\"") marksClosed = !marksClosed;
+      if (marksClosed) {
+        switch (c) {
+          case "{":
+            ident += 1;
+            s += c + "<br/>" + getIdent();
+            break;
+          case "}":
+            ident -= 1;
+            s += "<br/>" + getIdent() + c;
+            break;
+          case ",":
+            s += c + "<br/>" + getIdent();
+            break;
+          default:
+            s += c;
+            break;
+        }
+      } else {
+        s += c;
       }
     }
 
@@ -179,9 +189,32 @@ function registerSelectLoad(id) {
 }
 
 function loadPageSelect(id) {
+
   $selected = $("#" + id).find(":selected");
   let onpage = $("#" + id).data().onpage;
   let page = $selected.data().page;
   let callback = $selected.data().callback;
-  if (page) $("#" + onpage).load("html/efeitosFitaL/" + page + ".html", window[callback]);
+  if (page) $("#" + onpage).load("html/efeitosFitaL/" + page + ".html", loadComplete);
+
+  function loadComplete() {
+    window[callback]();
+    showValues("#" + onpage);
+  }
+}
+
+function estatico() {
+  // load jsColor and implement onChage method
+  loadJsColor().onChange = function (value) {
+    let c = hexToRgb(value);
+    $("#i_color_f1").val("rgb(" + c.r + "," + c.g + "," + c.b + ")");
+  }
+}
+
+function hexToRgb(hex) {
+  var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+  return result ? {
+    r: parseInt(result[1], 16),
+    g: parseInt(result[2], 16),
+    b: parseInt(result[3], 16)
+  } : null;
 }

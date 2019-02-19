@@ -18,23 +18,26 @@
         <hr>
     </div>
     <form class="col s12 row no-padding">
-        <div class="input-field col s4 m4 l2">
+        <div class="input-field col s4 m3 l3">
             <select id="s_efeito_f1" class="isvalue withData" data-onPage="efeito_content">
                 <option value="0" disabled selected>Selecione...</option>
-                <option value="1" data-page="estatico" data-callback="testecal">Estático</option>
+                <option value="1" data-page="estatico" data-callback="estatico">Estático</option>
                 <option value="2">Fade</option>
                 <option value="3">Strobo</option>
                 <option value="3">Rítmico</option>
             </select>
             <label>Efeito</label>
         </div>
-        <div id="efeito_content" class="row col s8 m8 l10">
-            <div class="col s4 m4 l12 labelinput"> Contraste: </div>
-            <div class="col s6 m4 l4">
-                <div class="input-field">
-                    <a href="#!" class="prefix remove"><i class="material-icons prefix">remove_circle_outline</i></a>
-                    <input id="i_contrast" type="text" class="validate center isvalue" value="0">
-                    <a href="#!" class="prefix add"><i class="material-icons prefix">add_circle_outline</i></a>
+        <div class="row col s8 m9 l9">
+            <div id="efeito_content" class="col s12 withSelect">
+                <div class="col s4 m4 l12 labelinput"> Contraste: </div>
+                <div class="col s6 m4 l4">
+                    <div class="input-field">
+                        <a href="#!" class="prefix remove"><i
+                                class="material-icons prefix">remove_circle_outline</i></a>
+                        <input id="i_contrast" type="text" class="validate center isvalue" value="0">
+                        <a href="#!" class="prefix add"><i class="material-icons prefix">add_circle_outline</i></a>
+                    </div>
                 </div>
             </div>
         </div>

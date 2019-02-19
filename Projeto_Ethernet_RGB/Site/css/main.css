@@ -95,7 +95,7 @@ ul.collapsible-accordion .collapsible-body li a {
 
 .labelinput{
     position: relative;
-    margin-top: 2rem;
+    margin-top: 1rem;
     margin-bottom: 1rem;
 }
 
@@ -109,4 +109,9 @@ hr{
 
 .btnInLine{
     margin-top: 2rem;
+}
+
+.withSelect{
+    position: relative;
+    margin-top: 1rem;
 }
