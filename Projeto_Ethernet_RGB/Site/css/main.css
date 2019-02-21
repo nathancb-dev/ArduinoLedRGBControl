@@ -90,7 +90,7 @@ ul.collapsible-accordion .collapsible-body li a {
 .input-field .prefix ~ input, .input-field .prefix ~ textarea, .input-field .prefix ~ label, .input-field .prefix ~ .validate ~ label, .input-field .prefix ~ .helper-text, .input-field .prefix ~ .autocomplete-content {
     margin-left: 3rem;
     margin-right: 1rem;
-    width: calc(100% - 4.28rem);
+    width: calc(100% - 65px);
 }
 
 .labelinput{
@@ -114,4 +114,8 @@ hr{
 .withSelect{
     position: relative;
     margin-top: 1rem;
+}
+
+#mainRow{
+    margin-bottom: 70px;
 }
