@@ -36,35 +36,42 @@ function loadPage(page, titleNav, callback) {
   if (page) {
     page = "html/" + page;
     if (page.substring(page.length - 5) != ".html") page += ".html";
-    $("#mainRow").load(page, loadComplete);
+    $("#mainRow").load(page, loadCompleted);
   }
 
-  function loadComplete() {
-    registerValuesIfNot();
+  function loadCompleted(){
+    loadComplete(false, callback);
+  }
+}
 
-    $(".add").click(function () {
-      modifyValue(this, +1);
-    });
+function loadComplete(showSpecific, callback) {
+  registerValuesIfNot();
 
-    $(".remove").click(function () {
-      modifyValue(this, -1);
-    });
+  $(".add").click(function () {
+    modifyValue(this, +1);
+  });
 
-    showValues();
-    M.AutoInit();
-    $("#loadPage").hide(); // or remove
-    setTimeout(callback, 100);
+  $(".remove").click(function () {
+    modifyValue(this, -1);
+  });
 
-    $.each($.cookie(), function (i, val) {
-      if (i.substring(0, 2) == "c_") {
-        $("#" + i).children().html(val);
-      }
-    });
+  if(showSpecific) showValues( showSpecific );
+  else showValues();
 
-    function modifyValue(that, num) {
-      $input = $(that).parent().find("input");
-      $input.val(parseInt($input.val()) + num);
+  M.AutoInit();
+  $("#loadPage").hide(); // or remove
+  
+  if(callback) setTimeout(callback, 100);
+
+  $.each($.cookie(), function (i, val) {
+    if (i.substring(0, 2) == "c_") {
+      $("#" + i).children().html(val);
     }
+  });
+
+  function modifyValue(that, num) {
+    $input = $(that).parent().find("input");
+    $input.val(parseInt($input.val()) + num);
   }
 }
 
@@ -194,11 +201,11 @@ function loadPageSelect(id) {
   let onpage = $("#" + id).data().onpage;
   let page = $selected.data().page;
   let callback = $selected.data().callback;
-  if (page) $("#" + onpage).load("html/efeitosFitaL/" + page + ".html", loadComplete);
+  if (page) $("#" + onpage).load("html/efeitosFitaL/" + page + ".html", loadCompleted);
 
-  function loadComplete() {
-    window[callback]();
-    showValues("#" + onpage);
+  function loadCompleted() {
+    if(callback) window[callback]();
+    loadComplete("#" + onpage);
   }
 }
 
