@@ -22,6 +22,21 @@ $(document).ready(function () {
     }
   });
 
+  setInterval(kappa, 100);
+
+  function kappa() {
+    $('.sidenav-overlay').each(function () {
+
+      $b = $("main, .fixed-action-btn");
+
+      if ($(this).is(":visible") && !$b.hasClass("side-blur"))
+        $b.addClass("side-blur");
+      else if (!$(this).is(":visible") && $b.hasClass("side-blur"))
+        $b.removeClass("side-blur");
+
+    });
+  }
+
   function ajustLastItem() {
     $last = $("#slide-out li").last();
     let margin = $(window).height() - $last.position().top - $last.children().outerHeight(true) + (($last.children().outerHeight(true) - $last.children().outerHeight()) / 2);
@@ -39,7 +54,7 @@ function loadPage(page, titleNav, callback) {
     $("#mainRow").load(page, loadCompleted);
   }
 
-  function loadCompleted(){
+  function loadCompleted() {
     loadComplete(false, callback);
   }
 }
@@ -55,13 +70,13 @@ function loadComplete(showSpecific, callback) {
     modifyValue(this, -1);
   });
 
-  if(showSpecific) showValues( showSpecific );
+  if (showSpecific) showValues(showSpecific);
   else showValues();
 
   M.AutoInit();
   $("#loadPage").hide(); // or remove
-  
-  if(callback) setTimeout(callback, 100);
+
+  if (callback) setTimeout(callback, 100);
 
   $.each($.cookie(), function (i, val) {
     if (i.substring(0, 2) == "c_") {
@@ -204,7 +219,7 @@ function loadPageSelect(id) {
   if (page) $("#" + onpage).load("html/efeitosFitaL/" + page + ".html", loadCompleted);
 
   function loadCompleted() {
-    if(callback) window[callback]();
+    if (callback) window[callback]();
     loadComplete("#" + onpage);
   }
 }

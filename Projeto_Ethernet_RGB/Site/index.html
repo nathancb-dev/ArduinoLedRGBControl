@@ -20,19 +20,9 @@
 	</div>
 
 	<header>
-		<nav class="top-nav">
-			<div class="container">
-				<div class="nav-wrapper principalcolor">
-					<a href="#" data-target="slide-out" class="top-nav sidenav-trigger principalcolor"><i
-							class="material-icons" style="font-size: 35px">menu</i></a>
-					<h3 class="center" id="titleNav"> Room Control </h3>
-				</div>
-			</div>
-		</nav>
-
 		<ul id="slide-out" class="sidenav sidenav-fixed">
 			<li>
-				<div class="center">
+				<div class="center principalcolor">
 					<div> <a href="#!" onclick="loadPage('home', 'Room Control')"> <i
 								class="material-icons principalcolor"
 								style="font-size: 150px; margin-top: 40px">settings_applications</i> </a>
@@ -42,16 +32,19 @@
 				</div>
 			</li>
 			<li class="divider"></li>
-			<li><a href="#!" onclick="loadPage('configFitaLedNathan', 'Fitas de LED (Nathan)')">Fitas de Led (Nathan)</a></li>
+			<li class="principalcolor"><a href="#!" class="principal-textcolor"
+					onclick="loadPage('configFitaLedNathan', 'Fitas de LED (Nathan)')">Fitas de Led (Nathan)</a></li>
 			<li class="noPadding">
 				<ul class="collapsible collapsible-accordion">
 					<li>
-						<a class="collapsible-header waves-effect" tabindex="0">Configurações</a>
+						<a class="collapsible-header waves-effect principal-textcolor" tabindex="0">Configurações</a>
 						<div class="collapsible-body">
 							<ul>
-								<li><a href="#!" onclick="loadPage('configArduino', 'Arduino/Componentes')">Arduino /
+								<li><a href="#!" class="principal-textcolor"
+										onclick="loadPage('configArduino', 'Arduino/Componentes')">Arduino /
 										Server</a></li>
-								<li><a href="#!" onclick="loadPage('configSite', 'Configurações')">Site</a></li>
+								<li><a href="#!" class="principal-textcolor"
+										onclick="loadPage('configSite', 'Configurações')">Site</a></li>
 							</ul>
 						</div>
 					</li>
@@ -63,19 +56,31 @@
 		</ul>
 	</header>
 
-	<main>
+	<main style="height: 100%">
+
+		<nav class="top-nav">
+			<div class="container">
+				<div class="nav-wrapper principalcolor">
+					<a href="#" data-target="slide-out" class="top-nav sidenav-trigger principalcolor"><i
+							class="material-icons" style="font-size: 35px">menu</i></a>
+					<h3 class="center" id="titleNav"> Room Control </h3>
+				</div>
+			</div>
+		</nav>
+
 		<div class="container">
 			<div id="mainRow" class="row">
 			</div>
 		</div>
-
-		<div class="fixed-action-btn">
-			<a id="b_flutuante" onclick="saveConfig()" class="btn-floating btn-large waves-effect tooltipped green"
-				data-position="left" data-tooltip="Aplicar Configurações">
-				<i class="large material-icons">check</i>
-			</a>
-		</div>
 	</main>
+
+	<div class="fixed-action-btn">
+		<a id="b_flutuante" onclick="saveConfig()"
+			class="btn-floating btn-large waves-effect tooltipped green principalBackgroundColor" data-position="left"
+			data-tooltip="Aplicar Configurações">
+			<i class="large material-icons">check</i>
+		</a>
+	</div>
 </body>
 
 <script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
@@ -84,4 +89,5 @@
 <script type="text/javascript" src="js/jscolor.js"></script>
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 <script type="text/javascript" src="js/main.js"></script>
+
 </html>
