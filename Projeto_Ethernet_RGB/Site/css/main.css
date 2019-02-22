@@ -116,6 +116,18 @@ ul.collapsible-accordion .collapsible-body li a {
     width: 100%;
     z-index:10000;
 }
+
+.switch label input[type=checkbox]:checked+.lever {
+    background-color: rgb(215, 215, 215) !important
+}
+
+.switch label input[type=checkbox]:checked+.lever:after {
+    background-color: white !important
+}
+
+.switch label .lever:before {
+    background-color: rgba(255,255,255,0.2) !important
+}
   
 .middle {
     display: table-cell;
