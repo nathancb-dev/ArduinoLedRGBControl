@@ -1,4 +1,4 @@
-var values = {};
+var valores = {};
 
 $(document).ready(function () {
   ajustLastItem();
@@ -119,10 +119,10 @@ function registerValues() {
   $.each($(".isvalue"), function (i, val) {
     switch (val.id.substring(0, 1)) {
       case "w":
-        values[val.id] = $("#" + val.id).is(":checked");
+        valores[val.id] = $("#" + val.id).is(":checked");
         break;
       default:
-        values[val.id] = $(val).val();
+        valores[val.id] = $(val).val();
         break;
     }
   });
@@ -130,13 +130,13 @@ function registerValues() {
 
 function registerValuesIfNot() {
   $.each($(".isvalue"), function (i, val) {
-    if (!values[val.id]) {
+    if (!valores[val.id]) {
       switch (val.id.substring(0, 1)) {
         case "w":
-          values[val.id] = $("#" + val.id).is(":checked");
+          valores[val.id] = $("#" + val.id).is(":checked");
           break;
         default:
-          values[val.id] = val.value;
+          valores[val.id] = val.value;
           break;
       }
     }
@@ -145,22 +145,22 @@ function registerValuesIfNot() {
 
 function showValues(specific) {
   if (!specific) specific = "";
-  else specific += " "
+  else specific += " ";
   $.each($(specific + ".isvalue"), function (i, val) {
-    if (values[val.id]) {
+    if (valores[val.id]) {
       switch (val.id.substring(0, 1)) {
         case "w":
           if (val.value) $("#" + val.id).attr("checked", true);
           break;
         case "s":
-          val.value = values[val.id];
+          val.value = valores[val.id];
           if ($("#" + val.id).hasClass("withData")) {
-            values[val.id] = $(val).val(); // Não sei pq, mas assim funciona (kappa)
+            //valores[val.id] = $(val).val(); // Não sei pq, mas assim funciona (kappa)
             registerSelectLoad(val.id);
           }
           break;
         default:
-          val.value = values[val.id];
+          val.value = valores[val.id];
           break;
       }
     }
@@ -169,7 +169,7 @@ function showValues(specific) {
 
 function saveConfig() {
   registerValues();
-  let htmlString = "Salvo!<br/>" + addBrToJson(values);
+  let htmlString = "Salvo!<br/>" + addBrToJson(valores);
   M.toast({ html: htmlString, classes: "rounded" });
 
   function addBrToJson(json) {
@@ -287,14 +287,20 @@ function registerSelectLoad(id) {
 function loadPageSelect(id) {
   registerValues();
 
-  $selected = $("#" + id).find(":selected");
-  let onpage = $("#" + id).data().onpage;
+  $item = $("#" + id);
+  $selected = $item.find(":selected");
+  let onpage = $item.data().onpage;
   let page = $selected.data().page;
   let callback = $selected.data().callback;
   if (page) $("#" + onpage).load("html/efeitosFitaL/" + page + ".html", loadCompleted);
 
   function loadCompleted() {
     if (callback) window[callback]();
+    if ($item.hasClass("copy")) {
+      $.each($("#" + onpage).find(".isvalue"), function (i, val) {
+        val.id += "_f" + $item.data().copynumber;
+      });
+    }
     loadComplete("#" + onpage);
   }
 }
