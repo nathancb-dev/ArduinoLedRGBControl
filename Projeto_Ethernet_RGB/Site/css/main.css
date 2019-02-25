@@ -3,7 +3,7 @@ header, main, footer {
 }
 
 body {
-    background-image: url("/img/background.jpg");
+    background-image: url("../img/background.jpg");
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
@@ -141,7 +141,8 @@ ul.collapsible-accordion .collapsible-body li a {
 }
 
 #mainRow{
-    padding-top: 10vh;
+    margin-top: 1.3rem;
+    margin-bottom: 80px;
 }
 
 .material-icons.prefix.posfix{
@@ -181,8 +182,4 @@ hr{
 .withSelect{
     position: relative;
     margin-top: 1rem;
-}
-
-#mainRow{
-    margin-bottom: 70px;
 }

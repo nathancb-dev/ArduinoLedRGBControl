@@ -3,6 +3,7 @@ var values = {};
 $(document).ready(function () {
   ajustLastItem();
   loadPage("home", "Room Control");
+  $("#d_ip").html("Host: " + window.location.host);
 
   $(window).resize(function () {
     ajustLastItem();
