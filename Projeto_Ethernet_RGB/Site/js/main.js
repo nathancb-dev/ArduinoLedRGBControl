@@ -62,23 +62,21 @@ function loadPage(page, titleNav, callback) {
 function loadComplete(showSpecific, callback) {
   registerValuesIfNot();
 
-  $(".add").click(function () {
+  $(".add").unbind('click').click(function () {
     modifyValue(this, +1);
 
-    if ($.cookie().c_s_saveImediato == "check")
-      saveImmediately($(this).parent().find("input"));
+    //if ($.cookie().c_s_saveImediato == "check") saveImmediately($(this).parent().find("input"));
   });
 
-  $(".remove").click(function () {
+  $(".remove").unbind('click').click(function () {
     modifyValue(this, -1);
 
-    if ($.cookie().c_s_saveImediato == "check")
-      saveImmediately($(this).parent().find("input"));
+    //if ($.cookie().c_s_saveImediato == "check") saveImmediately($(this).parent().find("input"));
   });
 
-  $("input[type=checkbox].isvalue").click(function () {
-    if ($.cookie().c_s_saveImediato == "check")
-      saveImmediately($(this));
+  $("input[type=checkbox].isvalue.islighting").unbind('click').click(function () {
+    let v = $.cookie().c_s_lightImediato;
+    if (!v || v == "check") saveImmediately($(this));
   });
 
   if (showSpecific) showValues(showSpecific);
@@ -286,6 +284,7 @@ function registerSelectLoad(id) {
 }
 
 function loadPageSelect(id) {
+  registerValues();
 
   $selected = $("#" + id).find(":selected");
   let onpage = $("#" + id).data().onpage;
@@ -303,7 +302,7 @@ function estatico() {
   // load jsColor and implement onChage method
   loadJsColor().onChange = function (value) {
     let c = hexToRgb(value);
-    $("#i_color_f1").val("rgb(" + c.r + "," + c.g + "," + c.b + ")");
+    $(".jscolor").val("rgb(" + c.r + "," + c.g + "," + c.b + ")");
   }
 }
 
