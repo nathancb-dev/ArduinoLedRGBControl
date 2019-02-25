@@ -2,7 +2,7 @@ var values = {};
 
 $(document).ready(function () {
   ajustLastItem();
-  loadPage("configFitaLedNathan", "Room Control");
+  loadPage("home", "Room Control");
 
   $(window).resize(function () {
     ajustLastItem();
@@ -14,7 +14,7 @@ $(document).ready(function () {
   });
 
   $.each($.cookie(), function (i, val) {
-    if (i.substring(0, 2) == "c_") {
+    if (i.substring(0, 3) == "c_b") {
       if (val == "clear")
         $("#" + i.substring(2)).hide();
       else
@@ -64,10 +64,21 @@ function loadComplete(showSpecific, callback) {
 
   $(".add").click(function () {
     modifyValue(this, +1);
+
+    if ($.cookie().c_s_saveImediato == "check")
+      saveImmediately($(this).parent().find("input"));
   });
 
   $(".remove").click(function () {
     modifyValue(this, -1);
+
+    if ($.cookie().c_s_saveImediato == "check")
+      saveImmediately($(this).parent().find("input"));
+  });
+
+  $("input[type=checkbox].isvalue").click(function () {
+    if ($.cookie().c_s_saveImediato == "check")
+      saveImmediately($(this));
   });
 
   if (showSpecific) showValues(showSpecific);
@@ -87,6 +98,21 @@ function loadComplete(showSpecific, callback) {
   function modifyValue(that, num) {
     $input = $(that).parent().find("input");
     $input.val(parseInt($input.val()) + num);
+  }
+
+  function saveImmediately(that) {
+    let v = {};
+
+    switch ($(that).get(0).id.substring(0, 1)) {
+      case "w":
+        v[$(that).get(0).id] = $(that).is(":checked");
+        break;
+      default:
+        v[$(that).get(0).id] = $(that).get(0).value;
+        break;
+    }
+
+    sendSave(v);
   }
 }
 
@@ -190,6 +216,54 @@ function saveConfig() {
   }
 }
 
+function sendSave(itens) {
+
+  let htmlString = "Salvo!<br/>" + addBrToJson(itens);
+  M.toast({ html: htmlString, classes: "rounded" });
+
+  function addBrToJson(json) {
+    let v = JSON.stringify(json, undefined, 4);
+    let c = "";
+    var s = "";
+    let ident = 0;
+    let marksClosed = true;
+    for (let i = 0; i <= v.length; i++) {
+      c = v.substring(i, i + 1);
+      if (c == "\"") marksClosed = !marksClosed;
+      if (marksClosed) {
+        switch (c) {
+          case "{":
+            ident += 1;
+            s += c + "<br/>" + getIdent();
+            break;
+          case "}":
+            ident -= 1;
+            s += "<br/>" + getIdent() + c;
+            break;
+          case ",":
+            s += c + "<br/>" + getIdent();
+            break;
+          default:
+            s += c;
+            break;
+        }
+      } else {
+        s += c;
+      }
+    }
+
+    return s;
+
+    function getIdent() {
+      let r = "";
+      for (let i = 0; i < ident; i++) {
+        r += "&nbsp;&nbsp;&nbsp;&nbsp;";
+      }
+      return r
+    }
+  }
+}
+
 function changeSaveBtn(id) {
   $i = $("#" + id).children();
   if ($i.html() == "check") {
@@ -201,6 +275,7 @@ function changeSaveBtn(id) {
   }
 
   $.cookie(id, $i.html());
+  console.log($.cookie());
 }
 
 function registerSelectLoad(id) {

@@ -160,6 +160,12 @@ ul.collapsible-accordion .collapsible-body li a {
     margin-bottom: 1rem;
 }
 
+.labelWithSwitch{
+    position: relative;
+    margin-top: 1.5rem;
+    margin-bottom: 1rem;
+}
+
 hr{
     margin-bottom: 0
 }
