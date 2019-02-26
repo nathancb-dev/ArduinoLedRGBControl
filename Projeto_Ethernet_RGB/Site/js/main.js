@@ -61,7 +61,7 @@ function loadPage(page, titleNav, callback) {
 }
 
 function loadComplete(showSpecific, callback) {
-  registerValuesIfNot();
+  registerValues(true);
 
   $(".add").unbind('click').click(function () {
     modifyValue(this, +1);
@@ -111,33 +111,38 @@ function loadComplete(showSpecific, callback) {
         break;
     }
 
-    sendSave(v);
+    saveConfig(v);
   }
 }
 
-function registerValues() {
+function registerValues(ifNot) {
   $.each($(".isvalue"), function (i, val) {
-    switch (val.id.substring(0, 1)) {
-      case "w":
-        valores[val.id] = $("#" + val.id).is(":checked");
-        break;
-      default:
-        valores[val.id] = val.value;
-        break;
-    }
-  });
-}
+    let inner = $("#" + val.id).data().innerjson;
 
-function registerValuesIfNot() {
-  $.each($(".isvalue"), function (i, val) {
-    if (!valores[val.id]) {
+    // if que é um caralho pra entende (na vdd é fácil, porém difícil, mas fácil)
+    if ((ifNot && ((!inner && !valores[val.id]) || (inner && !valores[inner]) || (valores[inner] && !valores[inner][val.id]))) || !ifNot) {
       switch (val.id.substring(0, 1)) {
         case "w":
-          valores[val.id] = $("#" + val.id).is(":checked");
+          trataItem($("#" + val.id).is(":checked"));
           break;
         default:
-          valores[val.id] = val.value;
+          trataItem(val.value);
           break;
+      }
+    }
+
+    function trataItem(value) {
+      let inner = $("#" + val.id).data().innerjson;
+
+      if (inner) {
+
+        if (!valores[inner])
+          valores[inner] = {};
+
+        valores[inner][val.id] = value;
+
+      } else {
+        valores[val.id] = value;
       }
     }
   });
@@ -147,78 +152,72 @@ function showValues(specific) {
   if (!specific) specific = "";
   else specific += " ";
   $.each($(specific + ".isvalue"), function (i, val) {
-    if (valores[val.id]) {
+    if (getValue()) {
       switch (val.id.substring(0, 1)) {
         case "w":
-          if (val.value) $("#" + val.id).attr("checked", true);
+          if (getValue()) $("#" + val.id).attr("checked", true);
           break;
         case "s":
-          val.value = valores[val.id];
+          val.value = getValue();
           if ($("#" + val.id).hasClass("withData")) {
             //valores[val.id] = $(val).val(); // Não sei pq, mas assim funciona (kappa)
             registerSelectLoad(val.id);
           }
           break;
         default:
-          val.value = valores[val.id];
+          val.value = getValue();
           break;
       }
     }
+
+    function getValue() {
+      let inner = $("#" + val.id).data().innerjson;
+
+      if (inner)
+        if (valores[inner]) return valores[inner][val.id];
+        else return undefined;
+      else
+        return valores[val.id];
+
+    }
+
   });
 }
 
-function saveConfig() {
+function saveConfig(specific) {
   registerValues();
-  let htmlString = "Salvo!<br/>" + addBrToJson(valores);
-  M.toast({ html: htmlString, classes: "rounded" });
+  M.toast({ html: "Aplicado!", classes: "rounded" });
 
-  function addBrToJson(json) {
-    let v = JSON.stringify(json, undefined, 4);
-    let c = "";
-    var s = "";
-    let ident = 0;
-    let marksClosed = true;
-    for (let i = 0; i <= v.length; i++) {
-      c = v.substring(i, i + 1);
-      if (c == "\"") marksClosed = !marksClosed;
-      if (marksClosed) {
-        switch (c) {
-          case "{":
-            ident += 1;
-            s += c + "<br/>" + getIdent();
-            break;
-          case "}":
-            ident -= 1;
-            s += "<br/>" + getIdent() + c;
-            break;
-          case ",":
-            s += c + "<br/>" + getIdent();
-            break;
-          default:
-            s += c;
-            break;
-        }
-      } else {
-        s += c;
+  console.log(JSON.parse(JSON.stringify((specific ? specific : valores))));
+  console.log(makeGetPost((specific ? specific : valores)));
+
+  function makeGetPost(json) {
+    if (json.length == 0) return;
+
+    let v = "";
+
+    for (const key in json) {
+      if (key.substring(0, 7) == "fields_") continue;
+
+      if (key.substring(0, 5) == "json_") {
+
+        valores["fields_" + key.substring(5)].forEach(el => {
+          v += "&" + el + "=" + trataValue(json[key][el]);
+        });
+
       }
+      else v += "&" + key + "=" + trataValue(json[key]);
     }
 
-    return s;
+    v = v.substring(1);
 
-    function getIdent() {
-      let r = "";
-      for (let i = 0; i < ident; i++) {
-        r += "&nbsp;&nbsp;&nbsp;&nbsp;";
-      }
-      return r
+    return v;
+
+    function trataValue(value) {
+      if (typeof value == "boolean") return value << 0;
+      return value;
     }
   }
-}
-
-function sendSave(itens) {
-
-  let htmlString = "Salvo!<br/>" + addBrToJson(itens);
-  M.toast({ html: htmlString, classes: "rounded" });
 
   function addBrToJson(json) {
     let v = JSON.stringify(json, undefined, 4);
@@ -284,22 +283,27 @@ function registerSelectLoad(id) {
 }
 
 function loadPageSelect(id) {
-  registerValues();
 
-  $item = $("#" + id);
-  $selected = $item.find(":selected");
-  let onpage = $item.data().onpage;
-  let page = $selected.data().page;
-  let callback = $selected.data().callback;
+  let item = $("#" + id);
+  let selected = item.find(":selected");
+  let onpage = item.data().onpage;
+  let nameInnerJson = item.data().nameinnerjson;
+  let page = selected.data().page;
+  let callback = selected.data().callback;
+
   if (page) $("#" + onpage).load("html/efeitosFitaL/" + page + ".html", loadCompleted);
 
+
   function loadCompleted() {
-    if (callback) window[callback]();
-    if ($item.hasClass("copy")) {
+    if (item.hasClass("copy")) {
+      valores["fields_" + id] = [];
       $.each($("#" + onpage).find(".isvalue"), function (i, val) {
-        val.id += "_f" + $item.data().copynumber;
+        val.id += "_f" + item.data().copynumber;
+        $("#" + val.id).data().innerjson = nameInnerJson;
+        valores["fields_" + id].push(val.id);
       });
     }
+    if (callback) window[callback]();
     loadComplete("#" + onpage);
   }
 }
@@ -308,7 +312,20 @@ function estatico() {
   // load jsColor and implement onChage method
   loadJsColor().onChange = function (element, value) {
     let c = hexToRgb(value);
+    let v = valores;
+
     $(element).val("rgb(" + c.r + "," + c.g + "," + c.b + ")");
+
+    if ($(element).data().innerjson)
+      v = valores[$(element).data().innerjson];
+
+    v[element.id] = value;
+
+    v["json_" + element.id] = {
+      r: c.r,
+      g: c.g,
+      b: c.b
+    }
   }
 }
 
