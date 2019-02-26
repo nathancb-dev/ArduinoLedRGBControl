@@ -1097,7 +1097,7 @@ function loadJsColor() {
 
 					if (jsc.isElementType(this.valueElement, 'input')) {
 						this.valueElement.value = value;
-						jsc.onChange(value);
+						jsc.onChange(this.valueElement, value);
 					} else {
 						this.valueElement.innerHTML = value;
 					}
@@ -1819,7 +1819,7 @@ function loadJsColor() {
 			}
 		},
 
-		onChange: function(value){
+		onChange: function(element, value){
 			// Implements on your code (onchange value from input) 
 		}
 	};

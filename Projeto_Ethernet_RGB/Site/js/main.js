@@ -122,7 +122,7 @@ function registerValues() {
         valores[val.id] = $("#" + val.id).is(":checked");
         break;
       default:
-        valores[val.id] = $(val).val();
+        valores[val.id] = val.value;
         break;
     }
   });
@@ -274,7 +274,6 @@ function changeSaveBtn(id) {
   }
 
   $.cookie(id, $i.html());
-  console.log($.cookie());
 }
 
 function registerSelectLoad(id) {
@@ -307,9 +306,9 @@ function loadPageSelect(id) {
 
 function estatico() {
   // load jsColor and implement onChage method
-  loadJsColor().onChange = function (value) {
+  loadJsColor().onChange = function (element, value) {
     let c = hexToRgb(value);
-    $(".jscolor").val("rgb(" + c.r + "," + c.g + "," + c.b + ")");
+    $(element).val("rgb(" + c.r + "," + c.g + "," + c.b + ")");
   }
 }
 
