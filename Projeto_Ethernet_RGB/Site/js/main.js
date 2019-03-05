@@ -51,7 +51,7 @@ function loadPage(page, titleNav, callback) {
   if (titleNav) $("#titleNav").html(titleNav);
   if (page) {
     page = "html/" + page;
-    if (page.substring(page.length - 5) != ".html") page += ".html";
+    if (page.substring(page.length - 5) != ".htm") page += ".htm";
     $("#mainRow").load(page, loadCompleted);
   }
 
@@ -291,7 +291,7 @@ function loadPageSelect(id) {
   let page = selected.data().page;
   let callback = selected.data().callback;
 
-  if (page) $("#" + onpage).load("html/efeitosFitaL/" + page + ".html", loadCompleted);
+  if (page) $("#" + onpage).load("html/efeitosft/" + page + ".htm", loadCompleted);
 
 
   function loadCompleted() {
